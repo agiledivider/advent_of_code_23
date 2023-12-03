@@ -13,25 +13,10 @@ export function cubeGameCounter(gameData: string, cubeCount: { red: number; gree
         return validGame;
     }
 
-    function minDice(draw: string, color: string) {
-        let minDiceCount = 0;
-        let regex = new RegExp("(\\d+) +"+color)
-        let matches = draw.match(regex)
-        if (matches) {
-            minDiceCount = Math.max(minDiceCount, Number(matches[1]))
-        }
-        return minDiceCount;
-    }
-
     function checkDraws(draw: string, validGame: boolean) {
         validGame = checkColor(draw, validGame, "red");
         validGame = checkColor(draw, validGame, "blue");
         validGame = checkColor(draw, validGame, "green");
-        let minDiceCount = {
-            red: minDice(draw, "red"),
-            green: minDice(draw, "green"),
-            blue: minDice(draw, "blue")
-        }
         return validGame;
     }
 

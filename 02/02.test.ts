@@ -90,7 +90,6 @@ describe("part 1", () => {
 
 describe("part 2", () => {
     test('lets see', () => {
-            let cubeCount = {red: 12, green: 13, blue: 14}
             expect(power(testdata)).toBe(78669);
         }
     )

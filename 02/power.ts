@@ -5,7 +5,6 @@ export function power(gameData: string): number {
         let minDiceCount = { red: 0, green: 0, blue: 0 }
         let matches = game.match(/^Game (\d+):(.*)/)
         if (matches) {
-            let validGame = true;
             let draws = matches[2].split(";");
             draws.forEach(draw => {
                 minDiceCount = {
