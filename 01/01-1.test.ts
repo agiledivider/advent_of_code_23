@@ -51,12 +51,19 @@ describe("part2, word digits", () => {
         ["zoneight234", 14],
         ["qbfvpnxsix3four1lfone", 61],
         ["sixgddsix7", 67],
-        ["oneight", 18],
         ["seven7", 77],
         ["seven", 77],
         ["twohbkkrzvpxeighttczsls4six5nineeight", 28],
         ["7pqrstsixteen", 76],
     ])('mixed wor and number digits (%s, %i)', (line: string, expected) => {
+        expect(calculateFirstAndLastNumberSum(line)).toBe(expected);
+    });
+
+
+    test.each([
+        ["oneight", 18],
+        ["nineight", 98],
+    ])('overlapping word digits (%s, %i)', (line: string, expected) => {
         expect(calculateFirstAndLastNumberSum(line)).toBe(expected);
     });
 })
@@ -79,6 +86,8 @@ describe("sum up real values", () => {
         expect(calculateFirstAndLastNumberSum(testdata)).toBe(54078)
     })
 })
+
+
 
 
 

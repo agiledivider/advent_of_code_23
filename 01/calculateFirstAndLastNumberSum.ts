@@ -1,11 +1,8 @@
 const MAXLENGTH = Number.MAX_SAFE_INTEGER
 
 export function calculateFirstAndLastNumberSum(textBlob: string) {
-    let sum = 0
-
     const textLines = splitLines(textBlob);
-    sum = calculateSumOverAllLines(textLines, sum);
-    return sum;
+    return calculateSumOverAllLines(textLines);
 }
 
 let digitMap = new Map<string, number>([
@@ -34,7 +31,8 @@ function splitLines(textBlob: string) {
     return textBlob.split("\n");
 }
 
-function calculateSumOverAllLines(textLines: string[], sum: number) {
+function calculateSumOverAllLines(textLines: string[]) {
+    let sum = 0;
     textLines.forEach((line: string) => {
         sum += lineValue(line);
     })
