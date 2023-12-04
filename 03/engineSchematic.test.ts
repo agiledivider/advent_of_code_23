@@ -2,6 +2,7 @@ import {describe, expect, test} from "bun:test";
 import {EngineSchematic} from "./engineSchematic.ts";
 import testdata from "./testdata.txt";
 import {Gears} from "./Gears.ts"
+import {Matrix} from "./matrix.ts";
 
 describe("Day 03 - engineSchematic", () => {
     describe("different game values", () => {
@@ -224,5 +225,73 @@ describe("Day 03 - gear ratio", () => {
             let sut : Gears = new Gears("...........\n....123*456\n...........\n....789*135");
             expect(sut.findGearNumbers()).toEqual([[123, 456],[789,135]])
         })
+
+        test("above numbers1", () => {
+            let sut : Gears = new Gears("...1.....\n....*....\n.........");
+            expect(sut.findGearNumbers()).toEqual([[1]])
+        })
+        test("above numbers2", () => {
+            let sut : Gears = new Gears("...12....\n....*....\n.........");
+            expect(sut.findGearNumbers()).toEqual([[12]])
+        })
+        test("above numbers3", () => {
+            let sut : Gears = new Gears("...123456\n....*....\n.........");
+            expect(sut.findGearNumbers()).toEqual([[123456]])
+        })
+        test("above numbers4", () => {
+            let sut : Gears = new Gears("..1123456\n....*....\n.........");
+            expect(sut.findGearNumbers()).toEqual([[1123456]])
+        })
+        test("above numbers5", () => {
+            let sut : Gears = new Gears(".234.....\n.*.......\n.........");
+            expect(sut.findGearNumbers()).toEqual([[234]])
+        })
+        test("above numbers6", () => {
+            let sut : Gears = new Gears("..234....\n.*.......\n.........");
+            expect(sut.findGearNumbers()).toEqual([[234]])
+        })
+        test("above numbers4", () => {
+            let sut : Gears = new Gears("432123456\n....*....\n.........");
+            expect(sut.findGearNumbers()).toEqual([[432123456]])
+        })
+
+        test("below numbers1", () => {
+            let sut : Gears = new Gears("....*....\n432123456\n.........");
+            expect(sut.findGearNumbers()).toEqual([[432123456]])
+        })
+    })
+
+    describe("none", () => {
+
+        test.each([
+            ["..........\n..........\n..........", 0],
+            ["..........\n....2*3...\n..........", 6],
+            ["....5.6...\n....2*3...\n..........", 0],
+            ["....5.6...\n.....*....\n..........", 30],
+        ])("gearsRatio \n%s %d", (data, expected) => {
+            let sut : Gears = new Gears(data);
+            expect(sut.gearsRatio()).toEqual(expected)
+        })
+
+        test("demo", () => {
+            let data = `467..114..
+...*......
+..35..633.
+......#...
+617*......
+.....+.58.
+..592.....
+......755.
+...$.*....
+.664.598..`
+            let sut : Gears = new Gears(data);
+            expect(sut.gearsRatio()).toEqual(467835)
+        })
+
+        test("part 2", () => {
+            let sut : Gears = new Gears(testdata);
+            expect(sut.gearsRatio()).toEqual(80403602)
+        })
     })
 })
+
