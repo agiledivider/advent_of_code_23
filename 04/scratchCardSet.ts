@@ -8,9 +8,21 @@ export class ScratchCardSet {
     points(): number {
         let points = 0
         this.cards.forEach(card => {
-            points += this.getPointsForCard(card)
+            let winCount = this.getPointsForCard(card)
+            points += winCount ? 2 ** (winCount - 1) : 0
         })
         return points
+    }
+
+    crazyWinningCardCount() : number {
+        let instances = new Array(this.cards.length).fill(1);
+        this.cards.forEach((card, index) => {
+            let winCount = this.getPointsForCard(card)
+            for (let i = 1; i <= winCount; i++) {
+                if (instances[index+i]) { instances[index+i] += instances[index] }
+            }
+        })
+        return instances.reduce((sum, current) =>  sum + current , 0)
     }
 
     private getPointsForCard(card: string): number {
@@ -22,17 +34,14 @@ export class ScratchCardSet {
             winningNumbers = win.split(" ").flatMap(this.numberfilter)
             playedNumbers = nums.split(" ").flatMap(this.numberfilter)
         }
-        console.log(winningNumbers, playedNumbers)
 
         let winCount = 0
         playedNumbers.forEach(num => {
             if (winningNumbers.indexOf(num) > 0) {
-                console.log(num)
                 winCount++;
             }
         })
-        console.log("wincount", winCount)
-        return winCount ? 2 ** (winCount - 1) : 0
+        return winCount;
     }
 
     private numberfilter(item) {
