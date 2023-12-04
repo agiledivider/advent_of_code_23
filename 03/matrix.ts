@@ -1,5 +1,5 @@
 export class Matrix {
-    private matrix: any[][];
+    private readonly matrix: any[][];
     width: number;
     height: number;
 
@@ -18,14 +18,11 @@ export class Matrix {
     }
 
     exists(row: number, column: number) {
-        if (row < 0
+        return !(row < 0
             || row >= this.height
             || column < 0
-            || column >= this.width
-        ) {
-            return false
-        }
-        return true
+            || column >= this.width);
+
     }
 
     get(row: number, column: number) {

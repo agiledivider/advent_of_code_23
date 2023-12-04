@@ -1,8 +1,8 @@
 export class EngineSchematic {
-    private map: string[];
-    private mapWidth: number;
-    private mapHeight: number;
-    private sum: number = 0;
+    private readonly map: string[];
+    private readonly mapWidth: number;
+    private readonly mapHeight: number;
+    private readonly sum: number = 0;
     private symbolRegEx = new RegExp(/[*+#$%§/\\=@&-]/)
 
     constructor(data: string) {

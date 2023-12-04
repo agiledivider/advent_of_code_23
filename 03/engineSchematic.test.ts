@@ -2,7 +2,6 @@ import {describe, expect, test} from "bun:test";
 import {EngineSchematic} from "./engineSchematic.ts";
 import testdata from "./testdata.txt";
 import {Gears} from "./Gears.ts"
-import {Matrix} from "./matrix.ts";
 
 describe("Day 03 - engineSchematic", () => {
     describe("different game values", () => {
