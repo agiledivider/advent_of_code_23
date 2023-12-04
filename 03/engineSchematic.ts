@@ -106,7 +106,11 @@ export class EngineSchematic {
         return Boolean(this.map[(row - 1) * this.mapWidth + column + 1].match(this.symbolRegEx));
     }
 
-    number(): number {
+    partsSum(): number {
         return this.sum;
+    }
+
+    gearRatio() : number {
+        return 0
     }
 }

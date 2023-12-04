@@ -1,6 +1,7 @@
 import {describe, expect, test} from "bun:test";
 import {EngineSchematic} from "./engineSchematic.ts";
 import testdata from "./testdata.txt";
+import {Gears} from "./Gears.ts"
 
 describe("Day 03 - engineSchematic", () => {
     describe("different game values", () => {
@@ -8,7 +9,7 @@ describe("Day 03 - engineSchematic", () => {
             ["............\n............", 0],
         ])('"%s", expected: %d', (data: string, expected: number) => {
             let sut = new EngineSchematic(data)
-            expect(sut.number()).toBe(expected)
+            expect(sut.partsSum()).toBe(expected)
         })
     })
 
@@ -21,7 +22,7 @@ describe("Day 03 - engineSchematic", () => {
             ["1+...........9+", 10],
         ])('one digit symbol after: %s, %d', (data: string, expected: number) => {
             let sut = new EngineSchematic(data)
-            expect(sut.number()).toBe(expected)
+            expect(sut.partsSum()).toBe(expected)
         })
 
         test.each([
@@ -31,7 +32,7 @@ describe("Day 03 - engineSchematic", () => {
             ["+3...........+5", 8],
         ])('one digit symbol before: %s, %d', (data: string, expected: number) => {
             let sut = new EngineSchematic(data)
-            expect(sut.number()).toBe(expected)
+            expect(sut.partsSum()).toBe(expected)
         })
 
         test.each([
@@ -50,7 +51,7 @@ describe("Day 03 - engineSchematic", () => {
 
         ])('different symbols: %s, %d', (data: string, expected: number) => {
             let sut = new EngineSchematic(data)
-            expect(sut.number()).toBe(expected)
+            expect(sut.partsSum()).toBe(expected)
         })
 
         test.each([
@@ -60,7 +61,7 @@ describe("Day 03 - engineSchematic", () => {
             ["...125..%125", 125],
         ])('multiple digits: %s, %d', (data: string, expected: number) => {
             let sut = new EngineSchematic(data)
-            expect(sut.number()).toBe(expected)
+            expect(sut.partsSum()).toBe(expected)
         })
     })
 
@@ -71,14 +72,14 @@ describe("Day 03 - engineSchematic", () => {
             ["10*..............\n.....90#.........", 100],
         ])('symbol after: %s, %d', (data: string, expected: number) => {
             let sut = new EngineSchematic(data)
-            expect(sut.number()).toBe(expected)
+            expect(sut.partsSum()).toBe(expected)
         })
         test.each([
             ["..............\n.....*6.......", 6],
             ["..............\n.....*65......", 65],
         ])('symbol after: %s, %d', (data: string, expected: number) => {
             let sut = new EngineSchematic(data)
-            expect(sut.number()).toBe(expected)
+            expect(sut.partsSum()).toBe(expected)
         })
 
         test.each([
@@ -87,7 +88,7 @@ describe("Day 03 - engineSchematic", () => {
             ["..*..\n.999.", 999],
         ])('symbol above: %s, %d', (data: string, expected: number) => {
             let sut = new EngineSchematic(data)
-            expect(sut.number()).toBe(expected)
+            expect(sut.partsSum()).toBe(expected)
         })
 
         test.each([
@@ -97,7 +98,7 @@ describe("Day 03 - engineSchematic", () => {
             ["..66..\n..*...", 66],
         ])('symbol below: %s, %d', (data: string, expected: number) => {
             let sut = new EngineSchematic(data)
-            expect(sut.number()).toBe(expected)
+            expect(sut.partsSum()).toBe(expected)
         })
 
         test.each([
@@ -114,7 +115,7 @@ describe("Day 03 - engineSchematic", () => {
             ["..123..\n.....*.", 123],
         ])('symbol corner: %s, %d', (data: string, expected: number) => {
             let sut = new EngineSchematic(data)
-            expect(sut.number()).toBe(expected)
+            expect(sut.partsSum()).toBe(expected)
         })
     })
 
@@ -138,23 +139,90 @@ describe("Day 03 - engineSchematic", () => {
 .664.598..`
 
             let sut = new EngineSchematic(data)
-            expect(sut.number()).toBe(4361)
+            expect(sut.partsSum()).toBe(4361)
         })
 
         test("Big Test", () => {
             let sut = new EngineSchematic(testdata)
-            expect(sut.number()).toBe(528819)
+            expect(sut.partsSum()).toBe(528819)
         })
     });
 });
 
 describe("Day 03 - gear ratio", () => {
-    describe("different game values", () => {
+    describe("none", () => {
         test.each([
-            ["............\n............", 0],
+            ["..........\n..........\n..........", 0],
         ])('"%s", expected: %d', (data: string, expected: number) => {
             let sut = new EngineSchematic(data)
-            expect(sut.number()).toBe(expected)
+            expect(sut.gearRatio()).toBe(expected)
+        })
+    })
+
+    describe("none", () => {
+
+        test.each([
+            ["..........\n..........\n..........", []],
+            ["*.........\n..........\n..........", [{row:0,column:0}]],
+            ["*.........\n..........\n........*.", [{row:0,column:0},{row:2,column:8}]],
+            ["*.........\n..........\n........*.", [{row:0,column:0},{row:2,column: 8}]]
+        ])("two", (data, expected) => {
+            expect((new Gears(data)).findPossibleGears()).toEqual(expected)
+        })
+
+        test("findAdjacentNumbers", () => {
+            let sut : Gears = new Gears("");
+            expect(sut.findGearNumbers()).toEqual([])
+        })
+
+        test("findAdjacentNumbers", () => {
+            let sut : Gears = new Gears("*.........\n..........\n........*.");
+            expect(sut.findGearNumbers()).toEqual([])
+        })
+
+        test("findAdjacentNumbers", () => {
+            let sut : Gears = new Gears("*12.......\n..........\n........*.");
+            expect(sut.findGearNumbers()).toEqual([[12]])
+        })
+
+        test("findAdjacentNumbers", () => {
+            let sut : Gears = new Gears("..........\n*12.......\n........*.");
+            expect(sut.findGearNumbers()).toEqual([[12]])
+        })
+
+        test("findAdjacentNumbers", () => {
+            let sut : Gears = new Gears("..........\n...*12....\n........*.");
+            expect(sut.findGearNumbers()).toEqual([[12]])
+        })
+
+        test("findAdjacentNumbers3", () => {
+            let sut : Gears = new Gears("..........\n.......*12");
+            expect(sut.findGearNumbers()).toEqual([[12]])
+        })
+
+        test("findAdjacentNumbers3", () => {
+            let sut : Gears = new Gears("...........\n.......*123");
+            expect(sut.findGearNumbers()).toEqual([[123]])
+        })
+
+        test("findAdjacentNumbers3", () => {
+            let sut : Gears = new Gears("...........\n.......123*");
+            expect(sut.findGearNumbers()).toEqual([[123]])
+        })
+
+        test("findGearNumbers", () => {
+            let sut : Gears = new Gears("...........\n.......123*");
+            expect(sut.findGearNumbers()).toEqual([[123]])
+        })
+
+        test("findGearNumbers", () => {
+            let sut : Gears = new Gears("...........\n....123*456");
+            expect(sut.findGearNumbers()).toEqual([[123, 456]])
+        })
+
+        test("findGearNumbers", () => {
+            let sut : Gears = new Gears("...........\n....123*456\n...........\n....789*135");
+            expect(sut.findGearNumbers()).toEqual([[123, 456],[789,135]])
         })
     })
 })
