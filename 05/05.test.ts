@@ -18,12 +18,12 @@ describe("Day 06", () => {
         )
     })
 
-    test("seeds without map", () => {
+    test("sample data", () => {
         let sut = new Planter(sampledata);
         expect(sut.lowestLocation()).toBe(35)
     })
 
-    test("seeds without map", () => {
+    test("final test", () => {
         let sut = new Planter(testdata);
         expect(sut.lowestLocation()).toBe(251346198)
     })
