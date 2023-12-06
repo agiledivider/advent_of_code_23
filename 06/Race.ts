@@ -15,7 +15,7 @@ export class Race {
         let min = Math.min(x1, x2)
         let max = Math.max(x1, x2)
 
-        return Math.floor(min), Math.ceil(max), Math.ceil(max) - Math.floor(min) - 1
+        return Math.ceil(max) - Math.floor(min) - 1
     }
 
     part1() {
