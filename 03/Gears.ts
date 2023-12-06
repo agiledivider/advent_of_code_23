@@ -14,7 +14,7 @@ export class Gears {
     }
 
     public findPossibleGears(): Array<Position> {
-        var results: Array<Position> = []
+        let results: Array<Position> = []
 
         for (let row = 0; row < this.matrix.height; row++) {
             for (let column = 0; column < this.matrix.width; column++) {
@@ -71,7 +71,7 @@ export class Gears {
     }
 
     findGearNumbers() {
-        let result = []
+        let result: number[][] = []
         let possibleGears = this.findPossibleGears()
         possibleGears.forEach(gearPosition => {
             let x = this.findAdjacentNumbers(gearPosition.row,gearPosition.column)
@@ -114,9 +114,9 @@ export class Gears {
     gearsRatio() :number {
         let x = this.findGearNumbers()
         let ratio = 0;
-        x.forEach(gearset => {
-            if(gearset.length == 2) {
-                ratio += gearset[0]*gearset[1]
+        x.forEach(gearSet => {
+            if(gearSet.length == 2) {
+                ratio += gearSet[0]*gearSet[1]
             }
         })
         return ratio;
