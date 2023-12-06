@@ -1,4 +1,7 @@
 import {PlanterMap} from "./PlanterMap.ts";
+import {Range} from "./range.ts";
+import {SeedIterator} from "./SeedIterator.ts";
+
 
 export class Planter {
     private rawData: string = "";
@@ -26,6 +29,7 @@ export class Planter {
         this.seeds = matches[1].trim().split(" ").map(val => Number(val))
     }
 
+
     private extractPlanterMaps() {
         let matches = this.rawData.match(/[\w-]+ map:[ \d\n]+/g)
         if (!matches) return
@@ -40,7 +44,7 @@ export class Planter {
     }
 
     private calculateLocations() {
-        this.seeds.forEach(seed => {
+        for(const seed of this.seeds) {
             let from = "seed"
             let currentResult = seed
             let currentPlanterMap = this.planterMaps.find(map => map.from == from)
@@ -53,7 +57,23 @@ export class Planter {
             //console.log("------")
             this.seedLocation.set(seed, currentResult)
 
-        })
+        }
         //console.log(this.seedLocation)
+    }
+}
+
+
+
+export class PlanterPart2 extends Planter {
+    private seeds: SeedIterator;
+    private extractSeeds() {
+        let matches = this.rawData.match(/seeds: +(.*)/i)
+        let valuePairs = matches[1].trim().split(" ").map(val => Number(val));
+
+        let ranges = []
+        for(let i=0; i < valuePairs.length - 1; i=i+2) {
+            ranges.push(new Range(valuePairs[i], valuePairs[i] + valuePairs[i+1]-1))
+        }
+        this.seeds = new SeedIterator(ranges)
     }
 }
