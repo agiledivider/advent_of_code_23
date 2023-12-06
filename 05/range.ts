@@ -1,6 +1,6 @@
 export class Range {
-    private start: number;
-    private end: number;
+    start: number;
+    end: number;
 
     constructor(start: number, end: number) {
         this.start = start
