@@ -1,6 +1,4 @@
 import {describe, expect, test} from "bun:test";
-import {PlanterMap} from "./PlanterMap.ts";
-import {Planter} from "./Planter.ts";
 import {PlanterPart2} from "./PlanterPart2.ts";
 import sampledata from "./sampleData.txt"
 

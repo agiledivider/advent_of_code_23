@@ -15,12 +15,6 @@ let cardMap: { [key: string]: number } = {
     "1": 1
 };
 
-function maxCardValue() {
-    return (max: number, card: string) => {
-        return Math.max(max, cardMap[card])
-    };
-}
-
 function compareStrongerFirstCard(a: string, b: string): number {
     for (let i = 0; i < 5; i++) {
         if (cardMap[a[i]] > cardMap[b[i]]) {
