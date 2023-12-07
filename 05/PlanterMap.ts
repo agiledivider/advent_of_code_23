@@ -27,9 +27,19 @@ export class PlanterMap {
         for (let map of this.ranges) {
             if (map.range.has(source)) {
                 return source + map.offset
-
             }
         }
         return source;
+    }
+
+    breakPoints() {
+        let points = []
+        this.ranges.map((map) => {
+            let x = points.push(map.range.start, map.range.end+1)
+            console.log(x)
+            return map
+        }, [])
+
+        return Array.from(new Set(points))
     }
 }
