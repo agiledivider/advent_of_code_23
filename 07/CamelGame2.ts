@@ -2,7 +2,6 @@ let cardMap: { [key: string]: number } = {
     "A": 14,
     "K": 13,
     "Q": 12,
-    "J": 11,
     "T": 10,
     "9": 9,
     "8": 8,
@@ -12,14 +11,9 @@ let cardMap: { [key: string]: number } = {
     "4": 4,
     "3": 3,
     "2": 2,
-    "1": 1
+    "J": 1,
 };
 
-function maxCardValue() {
-    return (max: number, card: string) => {
-        return Math.max(max, cardMap[card])
-    };
-}
 
 function compareStrongerFirstCard(a: string, b: string): number {
     for (let i = 0; i < 5; i++) {
@@ -35,6 +29,7 @@ function compareStrongerFirstCard(a: string, b: string): number {
 
 function cardCount(input: string) {
     let map: Map<string, number> = new Map<string, number>()
+
     for (let i = 0; i < input.length; i++) {
         if (map.has(input[i])) {
             // @ts-ignore
@@ -43,17 +38,23 @@ function cardCount(input: string) {
             map.set(input[i], 1)
         }
     }
-    return Array.from(map.values()).sort().reverse();
+
+    let joker = 0
+    if (map.has("J")) {
+        joker = map.get("J")
+        map.delete("J")
+        if (joker == 5) {
+            return [5]
+        }
+    }
+    let cardCount = Array.from(map.values()).sort().reverse()
+    cardCount[0] = cardCount[0] + joker
+    return cardCount
 }
 
-function has2Pairs(input: string) {
+function isTwoPairs(input: string) {
     let count = cardCount(input);
-    return count.reduce((numberOfPairs, amount) => {
-        if (amount == 2) {
-            return numberOfPairs + 1
-        }
-        return numberOfPairs
-    }, 0) == 2
+    return count.indexOf(2) > -1 && count.length == 3
 }
 
 function isPair(input: string) {
@@ -67,21 +68,21 @@ function isHighCard(input: string) {
 }
 
 
-function hasThreeOfAKind(a: string) {
+function isThreeOfAKind(a: string) {
     let count = cardCount(a);
     return count.indexOf(3) > -1
 }
 
-function hasFourOfAKind(a: string) {
+function isFourOfAKind(a: string) {
     let count = cardCount(a);
     return count.indexOf(4) > -1
 }
-function hasFiveOfAKind(a: string) {
+function isFiveOfAKind(a: string) {
     let count = cardCount(a);
     return count.indexOf(5) > -1
 }
 
-function hasFullHouse(input: string) {
+function isFullHouse(input: string) {
     let count = cardCount(input);
     return count.indexOf(2) > -1 && count.indexOf(3) > -1
 }
@@ -106,11 +107,11 @@ export function sort(hands: string[]) {
     hands = hands.sort((a, b) => {
         let result
         let x = [
-            hasFiveOfAKind,
-            hasFourOfAKind,
-            hasFullHouse,
-            hasThreeOfAKind,
-            has2Pairs,
+            isFiveOfAKind,
+            isFourOfAKind,
+            isFullHouse,
+            isThreeOfAKind,
+            isTwoPairs,
             isPair,
             isHighCard
         ]
@@ -125,7 +126,8 @@ export function sort(hands: string[]) {
     return hands;
 }
 
-export class CamelGame {
+
+export class CamelGame2 {
     private hands: Map<string, number> = new Map<string, number>();
 
     constructor(gameData: string) {
@@ -147,7 +149,6 @@ export class CamelGame {
             let multiplier = index + 1
             let bet = this.hands.get(hand) || 0
             sum += (multiplier * bet)
-            //console.log(hand, bet, multiplier, typeofwin(hand))
         });
         return sum;
     }
