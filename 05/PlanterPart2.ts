@@ -1,5 +1,3 @@
-import {SeedIterator} from "./SeedIterator.ts";
-import {Range} from "./range.ts";
 import {Planter} from "./Planter.ts";
 
 export class PlanterPart2 extends Planter {
@@ -14,7 +12,5 @@ export class PlanterPart2 extends Planter {
             currentPlanterMap = this.planterMaps.find(map => map.to == to)
         }
         console.log("sp", sourcePoints)
-
-        //console.log("------")
     }
 }

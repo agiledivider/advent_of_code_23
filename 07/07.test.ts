@@ -118,6 +118,7 @@ describe("Day 07", () => {
             ["1 pairs, nothing", "K8KT3 2\nT9876 1", 5],
             ["nothing, 2nd rule", "A2345 2\nK2345 1", 5],
             ["nothing, 2nd rule", "A2345 2\nQ2345 1", 5],
+            ["nothing, 2nd rule", "2345A 2\nQ2345 1", 4],
         ]
     )("2 hands: %s", (title, gameData: string, expected: number) => {
         let game = new CamelGame(gameData)
