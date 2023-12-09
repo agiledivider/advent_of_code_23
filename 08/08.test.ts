@@ -6,18 +6,14 @@ type MapInfo = {
     R: string;
 }
 
-function allKeysEndOnZ(keys: string[]) {
-
-    return keys.reduce((allEndInZ, key) => allEndInZ && key.endsWith("Z"), true);
-}
 
 class LRGame {
-    private LRSeries: string[];
+    private readonly LRSeries: string[];
     private map: Map<string, MapInfo> = new Map()
     private startNodes: string[] = [];
     constructor(data: string) {
         let lines = data.split("\n") || []
-        this.LRSeries = lines.shift().split("");
+        this.LRSeries = lines.shift()?.split("") || [];
         lines.shift()
         lines.forEach(line => {
             let [, key,L, R] = line.match(/(\w+) = \((\w+), (\w+)\)/);
@@ -37,7 +33,7 @@ class LRGame {
         let key = "AAA";
         let steps = 0;
         do {
-            key = this.map.get(key)[this.LRSeries[steps % this.LRSeries.length]];
+            key = this.map.get(key) ? this.map.get(key)[this.LRSeries[steps % this.LRSeries.length]] : "ZZZ";
             steps++
         } while (key !== "ZZZ")
         return steps;
@@ -51,24 +47,22 @@ class LRGame {
             let key = keys[i];
             do {
                 let stepCommand = this.LRSeries[steps % this.LRSeries.length]
-                key = this.map.get(key)[stepCommand]
+                key = this.map.get(key) ? this.map.get(key)[stepCommand] : "ZZZ";
                 steps++
             } while (!key.endsWith("Z"))
             stepsAll.push(steps)
         }
 
-        // find smallest common multiple of steps
-        let scm = stepsAll[0]
+        let smallestMultiple = stepsAll[0]
         for(let i=1;i<stepsAll.length;i++){
-            scm = this.smallestCommonMultiple(scm, stepsAll[i]);
+            smallestMultiple = this.smallestCommonMultiple(smallestMultiple, stepsAll[i]);
         }
-
-        return scm;
+        return smallestMultiple;
     }
 
     private smallestCommonMultiple(a: number, b: number): number {
-        const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b));
-        return (!a || !b) ? 0 : Math.abs((a * b) / gcd(a, b));
+        const greatestCommonDivisor = (a: number, b: number): number => (b === 0 ? a : greatestCommonDivisor(b, a % b));
+        return (!a || !b) ? 0 : Math.abs((a * b) / greatestCommonDivisor(a, b));
     }
 
 }
