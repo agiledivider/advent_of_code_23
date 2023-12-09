@@ -6,9 +6,15 @@ type MapInfo = {
     R: string;
 }
 
+function allKeysEndOnZ(keys: string[]) {
+
+    return keys.reduce((allEndInZ, key) => allEndInZ && key.endsWith("Z"), true);
+}
+
 class LRGame {
     private LRSeries: string[];
     private map: Map<string, MapInfo> = new Map()
+    private startNodes: string[] = [];
     constructor(data: string) {
         let lines = data.split("\n") || []
         this.LRSeries = lines.shift().split("");
@@ -21,50 +27,122 @@ class LRGame {
                     R: R
                 })
             }
+            if (key.at(2) === "A") {
+                this.startNodes.push(key)
+            }
         })
-        console.log(this.map)
-
     }
 
     part1() {
         let key = "AAA";
         let steps = 0;
-        let index = 0
         do {
             key = this.map.get(key)[this.LRSeries[steps % this.LRSeries.length]];
             steps++
         } while (key !== "ZZZ")
         return steps;
     }
+
+    part2() {
+        let keys = this.startNodes
+        let stepsAll = []
+        for (let i = 0; i < keys.length; i++) {
+            let steps = 0;
+            let key = keys[i];
+            do {
+                let stepCommand = this.LRSeries[steps % this.LRSeries.length]
+                key = this.map.get(key)[stepCommand]
+                steps++
+            } while (!key.endsWith("Z"))
+            stepsAll.push(steps)
+        }
+
+        // find smallest common multiple of steps
+        let scm = stepsAll[0]
+        for(let i=1;i<stepsAll.length;i++){
+            scm = this.smallestCommonMultiple(scm, stepsAll[i]);
+        }
+
+        return scm;
+    }
+
+    private smallestCommonMultiple(a: number, b: number): number {
+        const gcd = (a: number, b: number): number => (b === 0 ? a : gcd(b, a % b));
+        return (!a || !b) ? 0 : Math.abs((a * b) / gcd(a, b));
+    }
+
 }
 
 describe("Day 08", () => {
+    describe("Part 1", () => {
 
-    test.each([
-        ["LR\n" +
-        "\n" +
-        "AAA = (ZZZ, BBB)", 1],
-        ["LLR\n" +
-        "\n" +
-        "AAA = (BBB, BBB)\n" +
-        "BBB = (AAA, ZZZ)\n" +
-        "ZZZ = (ZZZ, ZZZ)", 6],
-        ["RL\n" +
-        "\n" +
-        "AAA = (BBB, CCC)\n" +
-        "BBB = (DDD, EEE)\n" +
-        "CCC = (ZZZ, GGG)\n" +
-        "DDD = (DDD, DDD)\n" +
-        "EEE = (EEE, EEE)\n" +
-        "GGG = (GGG, GGG)\n" +
-        "ZZZ = (ZZZ, ZZZ)", 2]
-    ])('"%s", expected: %d', (data: string, expected: number) => {
-        let sut = new LRGame(data);
-        expect(sut.part1()).toBe(expected)
+        test.each([
+            ["LR\n" +
+            "\n" +
+            "AAA = (ZZZ, BBB)", 1],
+            ["LLR\n" +
+            "\n" +
+            "AAA = (BBB, BBB)\n" +
+            "BBB = (AAA, ZZZ)\n" +
+            "ZZZ = (ZZZ, ZZZ)", 6],
+            ["RL\n" +
+            "\n" +
+            "AAA = (BBB, CCC)\n" +
+            "BBB = (DDD, EEE)\n" +
+            "CCC = (ZZZ, GGG)\n" +
+            "DDD = (DDD, DDD)\n" +
+            "EEE = (EEE, EEE)\n" +
+            "GGG = (GGG, GGG)\n" +
+            "ZZZ = (ZZZ, ZZZ)", 2]
+        ])('"%s", expected: %d', (data: string, expected: number) => {
+            let sut = new LRGame(data);
+            expect(sut.part1()).toBe(expected)
+        })
+
+        test("final test", () => {
+            let sut = new LRGame(testdata);
+            expect(sut.part1()).toBe(20513)
+        })
     })
 
-    test("final test", () => {
-        let sut = new LRGame(testdata);
-        expect(sut.part1()).toBe(20513)
+    describe("Part 2", () => {
+        test.each([
+            ["LR\n" +
+            "\n" +
+            "AAA = (ZZZ, BBB)\n" +
+            "ZZZ = (ZZZ, ZZZ)", 1],
+            ["RL\n" +
+            "\n" +
+            "AAA = (BBB, CCC)\n" +
+            "BBB = (DDD, EEE)\n" +
+            "CCC = (ZZZ, GGG)\n" +
+            "DDD = (DDD, DDD)\n" +
+            "EEE = (EEE, EEE)\n" +
+            "GGG = (GGG, GGG)\n" +
+            "ZZZ = (ZZZ, ZZZ)", 2],
+            ["LLR\n" +
+            "\n" +
+            "AAA = (BBB, BBB)\n" +
+            "BBB = (AAA, ZZZ)\n" +
+            "ZZZ = (ZZZ, ZZZ)", 6],
+            ["LR\n" +
+            "\n" +
+            "11A = (11B, XXX)\n" +
+            "11B = (XXX, 11Z)\n" +
+            "11Z = (11B, XXX)\n" +
+            "22A = (22B, XXX)\n" +
+            "22B = (22C, 22C)\n" +
+            "22C = (22Z, 22Z)\n" +
+            "22Z = (22B, 22B)\n" +
+            "XXX = (XXX, XXX)", 6],
+        ])('"%s", expected: %d', (data: string, expected: number) => {
+            let sut = new LRGame(data);
+            expect(sut.part2()).toBe(expected)
+        })
+
+        test("final test", () => {
+            let sut = new LRGame(testdata);
+            expect(sut.part2()).toBe(15995167053923)
+        })
     })
 })
