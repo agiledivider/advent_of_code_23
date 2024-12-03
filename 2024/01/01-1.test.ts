@@ -1,7 +1,7 @@
 import testdata_dev from "./testdata_dev.txt";
 import data_part1 from "./data_part1.txt";
 import {describe, expect, test} from "bun:test";
-import {calculateDistance} from "./calculateDistance.ts";
+import {calculateDistance, calculateSimilarityScore} from "./calculateDistance.ts";
 
 describe('Day 01 - part 1', () => {
 
@@ -32,3 +32,18 @@ describe('Day 01 - part 1', () => {
     })
 })
 
+
+describe('Day 01 - part 2', () => {
+
+    test('zero similarity', () => {
+        expect(calculateSimilarityScore("1 2")).toBe(0);
+    })
+
+    test('test_data', () => {
+        expect(calculateSimilarityScore(testdata_dev)).toBe(31);
+    })
+
+    test('part 2', () => {
+        expect(calculateSimilarityScore(data_part1)).toBe(20719933);
+    })
+})

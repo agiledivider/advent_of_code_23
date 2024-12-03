@@ -1,5 +1,3 @@
-
-
 export function calculateDistance(textBlob: string) : number {
     const [left, right] = splitLinesIntoArrays(textBlob);
 
@@ -8,6 +6,21 @@ export function calculateDistance(textBlob: string) : number {
         distance += Math.abs(left[i] - right[i]);
     }
     return distance;
+}
+
+export function calculateSimilarityScore(textBlob: string) : number {
+    const [left, right] = splitLinesIntoArrays(textBlob);
+    let score = 0;
+    let numberCounter: {[key: number]: number} = {};
+    for (const number of right) {
+        numberCounter[number] = numberCounter[number] ? numberCounter[number] + 1 : 1;
+    }
+    for (const number of left) {
+        if (numberCounter[number]) {
+            score += numberCounter[number] * number;
+        }
+    }
+    return score;
 }
 
 function splitLinesIntoArrays(textBlob: string) {
@@ -23,7 +36,6 @@ function splitLinesIntoArrays(textBlob: string) {
 
     left = left.sort((n1,n2) => n1 - n2);
     right = right.sort((n1,n2) => n1 - n2);
-
 
     return[left, right];
 }
