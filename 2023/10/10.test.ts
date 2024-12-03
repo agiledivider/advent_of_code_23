@@ -1,5 +1,4 @@
-import {describe, expect, test} from "bun:test";
-import * as path from "path";
+import {describe, test} from "bun:test";
 
 
 class AnimalPath {
@@ -83,18 +82,3 @@ function printMap(map: string[][],path: string[]) {
 }
 
 
-
-
-describe("Day 10", () => {
-    describe("Part 1", () => {
-        test("sample data", () => {
-            let sut = new AnimalPath("-L|F7\n" +
-                "7S-7|\n" +
-                "L|7||\n" +
-                "-L-J|\n" +
-                "L|-JF")
-
-
-        })
-    })
-})
